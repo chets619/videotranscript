@@ -3,6 +3,7 @@ import { FileUploader } from 'ng2-file-upload';
 import * as Vtt from 'vtt-creator';
 import * as vttToJson from "vtt-json";
 import 'rxjs/Rx';
+import { UploadService } from '../service/uploadservice';
 
 // const URL = '/api/';
 const URL = 'http://localhost:4200/upload';
@@ -17,8 +18,10 @@ export class VideoComponentComponent implements OnInit {
   public uploader: FileUploader = new FileUploader({ url: URL });
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
+  private videoUrl = '../../../assets/video/sample.mp4';
 
-  constructor() { }
+
+  constructor(public uploadService: UploadService) { }
 
   ngOnInit() {
     var v = new Vtt();
@@ -29,6 +32,10 @@ export class VideoComponentComponent implements OnInit {
 
     vttToJson(v.toString()).then((result) => {
       console.log(result)
+    });
+
+    this.uploadService.getCat('Chets').subscribe((result) => {
+      debugger;
     });
   }
 
@@ -47,7 +54,7 @@ export class VideoComponentComponent implements OnInit {
     window.URL.revokeObjectURL(url);
     a.remove();
   }
-  
+
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
   }

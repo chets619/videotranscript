@@ -49,6 +49,21 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
-  }
+    "typescript": "~2.5.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "formidable": "^1.2.1"
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chets619/videotranscript.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/chets619/videotranscript/issues"
+  },
+  "homepage": "https://github.com/chets619/videotranscript#readme"
 }
