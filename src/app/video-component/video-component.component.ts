@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import * as Vtt from 'vtt-creator';
+import * as vttToJson from "vtt-json";
 import 'rxjs/Rx';
 
 // const URL = '/api/';
@@ -24,7 +25,11 @@ export class VideoComponentComponent implements OnInit {
     v.add(1.05, 4, 'Never drink liquid nitrogen.', 'align:middle line:84%');
     v.add(5, 9, ['It will perforate your stomach.', 'You could die.']);
 
-    this.saveFile(v.toString());
+    // this.saveFile(v.toString());
+
+    vttToJson(v.toString()).then((result) => {
+      console.log(result)
+    });
   }
 
   saveFile(data) {

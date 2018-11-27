@@ -27,6 +27,7 @@
     "rxjs-compat": "^6.0.0",
     "videogular2": "^6.3.0",
     "vtt-creator": "^1.1.1",
+    "vtt-json": "^1.0.1",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
