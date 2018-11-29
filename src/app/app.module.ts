@@ -8,7 +8,6 @@ import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { UploadService } from './service/uploadservice';
 import { HttpModule } from '@angular/http';
 
 @NgModule({
@@ -24,7 +23,7 @@ import { HttpModule } from '@angular/http';
     HttpClientModule,
     HttpModule
   ],
-  providers: [UploadService, HttpClient],
+  providers: [HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

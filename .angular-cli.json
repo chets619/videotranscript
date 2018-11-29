@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [        
-        "../node_modules/videogular2/fonts/videogular.css",
+        "../node_modules/videogular2/fonts/videogular.css",       
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.styl"
       ],
       "scripts": [],

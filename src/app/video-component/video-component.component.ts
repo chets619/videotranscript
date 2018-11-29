@@ -4,7 +4,6 @@ import * as Vtt from 'vtt-creator';
 import * as vttToJson from "vtt-json";
 import { Http, Response } from '@angular/http';
 import 'rxjs/Rx';
-import { UploadService } from '../service/uploadservice';
 
 const URL = 'http://localhost:3000/upload';
 
@@ -17,20 +16,16 @@ export class VideoComponentComponent implements OnInit {
 
   public uploader: FileUploader = new FileUploader({ url: URL });
   private videoUrl = '';
+  private jsonResult = {};
 
   constructor(private http: Http, private el: ElementRef) { }
 
   ngOnInit() {
     var v = new Vtt();
     v.add(1.05, 4, 'Never drink liquid nitrogen.', 'align:middle line:84%');
-    v.add(5, 9, ['It will perforate your stomach.', 'You could die.']);
+    v.add(5, 9, 'It will perforate your stomach.<br>You could die.');
 
     // this.saveFile(v.toString());
-
-    //convert vtt to json
-    vttToJson(v.toString()).then((result) => {
-      console.log(result)
-    });
   }
 
   upload() {
@@ -47,7 +42,6 @@ export class VideoComponentComponent implements OnInit {
           //map the success function and alert the response
           (success) => {
             self.videoUrl = 'http://localhost:3000/' + success[0].filename;
-            self.el.nativeElement.querySelector('video').load();
           },
           (error) => alert(error))
     }
@@ -68,5 +62,22 @@ export class VideoComponentComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
+  }
+
+  vttChanged($event) {
+    const a = $event.currentTarget.files[0];
+    let currFile = new FileReader();
+    const self = this;
+
+    currFile.onload = function (e) {
+      var contents: any = e.target;
+      let filecontent = contents.result;
+
+      //vtt to json
+      vttToJson(filecontent).then((result) => {
+        self.jsonResult = result;
+      });
+    }
+    currFile.readAsText(a);
   }
 }
