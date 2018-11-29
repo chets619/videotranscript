@@ -6,8 +6,7 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/Rx';
 import { UploadService } from '../service/uploadservice';
 
-// const URL = '/api/';
-const URL = 'http://localhost:8000/';
+const URL = 'http://localhost:3000/upload';
 
 @Component({
   selector: 'app-video-component',
@@ -17,11 +16,7 @@ const URL = 'http://localhost:8000/';
 export class VideoComponentComponent implements OnInit {
 
   public uploader: FileUploader = new FileUploader({ url: URL });
-
-  public hasBaseDropZoneOver: boolean = false;
-  public hasAnotherDropZoneOver: boolean = false;
-  private videoUrl = '../../../assets/video/sample.mp4';
-
+  private videoUrl = '';
 
   constructor(private http: Http, private el: ElementRef) { }
 
@@ -32,42 +27,33 @@ export class VideoComponentComponent implements OnInit {
 
     // this.saveFile(v.toString());
 
+    //convert vtt to json
     vttToJson(v.toString()).then((result) => {
       console.log(result)
     });
   }
 
-
-  //the function which handles the file upload without using a plugin.
   upload() {
-    //locate the file element meant for the file upload.
     let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#photo');
-    //get the total amount of files attached to the file input.
     let fileCount: number = inputEl.files.length;
-    //create a new fromdata instance
     let formData = new FormData();
-    //check if the filecount is greater than zero, to be sure a file was selected.
-    if (fileCount > 0) { // a file was selected
+    let self = this;
+
+    if (fileCount > 0) {
       //append the key name 'photo' with the first file in the element
       formData.append('photo', inputEl.files.item(0));
-      //call the angular http method
       this.http
-        //post the form data to the url defined above and map the response. Then subscribe //to initiate the post. if you don't subscribe, angular wont post.
-        .post(URL, formData).map((res: Response) => res.text()).subscribe(
+        .post(URL, formData).map((res: Response) => res.json()).subscribe(
           //map the success function and alert the response
           (success) => {
-            // let a = JSON.parse(success);
-            alert(success);
+            self.videoUrl = 'http://localhost:3000/' + success[0].filename;
+            self.el.nativeElement.querySelector('video').load();
           },
           (error) => alert(error))
     }
   }
 
-
-
-
-
-
+  //save vtt file
   saveFile(data) {
     let name = 'sample.vtt';
     let type = 'data:attachment/text';
@@ -83,13 +69,4 @@ export class VideoComponentComponent implements OnInit {
     window.URL.revokeObjectURL(url);
     a.remove();
   }
-
-  public fileOverBase(e: any): void {
-    this.hasBaseDropZoneOver = e;
-  }
-
-  public fileOverAnother(e: any): void {
-    this.hasAnotherDropZoneOver = e;
-  }
-
 }

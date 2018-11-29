@@ -1,56 +1,40 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const server = express();
-const multer = require('multer');
-var corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200
-};
-var DIR = './uploads/';
+var express = require("express");
+var multer = require("multer");
+var app = express();
+var path = require("path");
+var uuid = require("uuid");
 
-var upload = multer({
-  dest: DIR
-}).single('photo');
-
-server.use(function (req, res, next) {
+// Allow cross origin resource sharing (CORS) within our application
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
-server.use(cors(corsOptions));
-server.get('/', function (req, res, next) {
-  // render the index page, and pass data to it.
-  //   res.render('app', {
-  //     title: 'Express'
-  //   });
-
-  var json_data = {
-    "name": "123",
-    "pass": "12345"
-  };
-  res.json(json_data);
+app.get('/', function (req, res) {
+  res.send('<html><body><h1>Hello World</h1></body></html>');
 });
-server.use(bodyParser.json());
+app.use(express.static(__dirname + '/uploads'));
 
-server.post('/', function (req, res, next) {
-  var path = '';
-  upload(req, res, function (err) {
-    if (err) {
-      // An error occurred when uploading
-      console.log(err);
-      return res.status(422).send("an Error occured")
-    }
-    // No error occured.
-    path = req.file.path;
-    return res.send("Upload Completed for " + path);
-  });
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, uuid.v4() + path.extname(file.originalname));
+  }
 })
 
-server.listen(8000, () => {
-  console.log('Server started on 8000!');
+var upload = multer({
+  storage: storage
+})
+
+// "files" should be the same name as what's coming from the field name on the client side.
+app.post("/upload", upload.array("photo", 12), function (req, res) {
+  res.send(req.files);
+  console.log("files = ", req.files);
 });
 
-module.exports = server;
+var server = app.listen(3000, function () {
+  console.log("Listening on port %s...", server.address().port);
+});
