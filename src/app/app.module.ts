@@ -9,6 +9,7 @@ import { VgControlsModule } from 'videogular2/controls';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { UploadService } from './service/uploadservice';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UploadService } from './service/uploadservice';
     BrowserModule,
     VgCoreModule,
     VgControlsModule,
-    HttpClientModule
+    HttpClientModule,
+    HttpModule
   ],
   providers: [UploadService, HttpClient],
   bootstrap: [AppComponent]

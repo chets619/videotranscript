@@ -5,4 +5,11 @@
   <source [src]="videoUrl" type="video/mp4">
   Your browser does not support the video tag.
 </video>
-<input type="file" #Image accept="video/mp4" (change)="handleFileInput($event.target.files)">
+<!-- <input type="file" #Image accept="video/mp4" (change)="handleFileInput($event.target.files)"> -->
+
+<!-- File input for upload without using the plugin. -->
+<input id="photo" type="file" />
+<!-- button to trigger the file upload when submitted -->
+<button type="button" class="btn btn-success btn-s" (click)="upload()">
+  Upload with method 2
+</button>
