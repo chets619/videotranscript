@@ -1,27 +1,45 @@
-<video width="800" height="600" controls #videoplayer *ngIf="videoUrl != ''">
-  <source [src]="videoUrl" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-
-
-<input id="subtitle" type="file" name="subtitle" accept=".vtt" (change)="vttChanged($event)">
 <div class="app-wrapper col-sm-12">
   <div class="col-sm-12 title-card card flex">
     <div class="title-container col-sm-6">
-      <h3 class="title">Video Transcript Generator</h3>
-      <div class="description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit in laudantium qui tenetur
+      <h3 class="title">Video Subtitle Generator</h3>
+      <div class="description" *ngIf="!subtitleLoaded">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit in laudantium qui tenetur
         voluptatum eligendi? Laborum ratione, tempora officiis omnis excepturi cumque consequatur dolores ipsam!
         Tempore, error eaque. Tempore, porro.</div>
     </div>
 
-    <div class="select-video-container col-sm-4 flex">
+    <div class="select-video-container col-sm-4 flex" [class.no-display]="showVideo">
       <div class="desc-text">
-        Please select a video and click the start button to start with
+        Please select a video to start
       </div>
       <div class="select-video">
-        <input id="photo" type="file" accept="video/*" />
-        <button type="button" class="btn btn-primary" (click)="upload()">Upload</button>
+        <div class="upload-btn btn btn-primary" (click)="onClickUpload()">Upload a Video</div>
+        <input id="photo" type="file" accept="video/*" #inputUpload (change)="loadVideo()" class="no-display">
+      </div>
+    </div>
+
+    <div class="col-sm-12 video-subtitle-container row" [class.no-display]="!showVideo" [class.subtitle-loaded]="subtitleLoaded">
+      <div class="col-sm-6 video-container">
+        <video controls #videoplayer [class.no-display]="!showVideo">
+          <source type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="col-sm-6 subtitle-container" *ngIf="!subtitleLoaded">
+        <h4 class="title-sub flex">
+          Select an option
+        </h4>
+        <div class="btn-container-sub flex">
+          <div class="upload-btn btn btn-primary" (click)="uploadSubtitle()">Upload an existing vtt file</div>
+          <input id="subtitle" type="file" name="subtitle" accept=".vtt" (change)="vttChanged($event)" class="no-display"
+            #subtitleUpload>
+          <div class="upload-btn btn btn-primary" (click)="createNew()">Create New</div>
+          <div class="upload-btn btn btn-primary" (click)="showVideo = false">Select New Video</div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 subtitle-editor" *ngIf="subtitleLoaded">
+        <app-subtitle-editor [subtitleJson]="jsonResult"></app-subtitle-editor>
       </div>
     </div>
   </div>

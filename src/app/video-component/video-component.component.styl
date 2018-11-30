@@ -1,7 +1,7 @@
 @import '../../colors.styl';
 
 .app-wrapper
-    max-height 80vh
+    max-height 95vh
     .title-card
         padding 1.2rem
         .title-container
@@ -14,3 +14,20 @@
             border-radius 15px
             .desc-text
                 padding-bottom 2rem
+        .video-subtitle-container
+            margin 3.5rem 0
+            padding 0
+            &.subtitle-loaded
+                margin 0
+            .video-container
+                border-right solid 1px $tertiaryColor
+                video
+                    width 100%
+            .subtitle-container
+                .btn-container-sub
+                    justify-content space-around
+                    flex-direction column
+                    height 50%
+                    .btn-primary
+                        min-width 30%
+                        font-size 0.8rem
