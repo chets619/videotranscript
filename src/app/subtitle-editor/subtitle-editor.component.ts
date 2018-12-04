@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SubtitleEditorComponent implements OnInit {
 
-  @Input() subtitleJson = {};
+  @Input() subtitleJson = [];
 
   constructor() { }
 

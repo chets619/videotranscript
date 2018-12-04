@@ -2,7 +2,8 @@
   <div class="col-sm-12 title-card card flex">
     <div class="title-container col-sm-6">
       <h3 class="title">Video Subtitle Generator</h3>
-      <div class="description" *ngIf="!subtitleLoaded">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit in laudantium qui tenetur
+      <div class="description" *ngIf="!subtitleLoaded">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit in
+        laudantium qui tenetur
         voluptatum eligendi? Laborum ratione, tempora officiis omnis excepturi cumque consequatur dolores ipsam!
         Tempore, error eaque. Tempore, porro.</div>
     </div>
@@ -33,13 +34,48 @@
           <div class="upload-btn btn btn-primary" (click)="uploadSubtitle()">Upload an existing vtt file</div>
           <input id="subtitle" type="file" name="subtitle" accept=".vtt" (change)="vttChanged($event)" class="no-display"
             #subtitleUpload>
-          <div class="upload-btn btn btn-primary" (click)="createNew()">Create New</div>
+          <div class="upload-btn btn btn-primary" (click)="subtitleLoaded = true">Create New</div>
           <div class="upload-btn btn btn-primary" (click)="showVideo = false">Select New Video</div>
         </div>
       </div>
 
       <div class="col-sm-6 subtitle-editor" *ngIf="subtitleLoaded">
-        <app-subtitle-editor [subtitleJson]="jsonResult"></app-subtitle-editor>
+        <div class="editor-wrapper">
+          <div class="subtitle-collection">
+
+          </div>
+          <div class="button-container flex">
+            <div class="btn btn-primary start-btn">Set Start</div>
+            <div class="btn btn-primary stop-btn">Set Stop</div>
+            <div class="btn btn-primary edit-btn">Edit Selected</div>
+          </div>
+          <div class="editor-container col-sm-12 flex">
+            <div class="col-sm-6 start-container">
+              <div class="start-time">Start Time</div>
+              <div class="input-time">
+                <input type="text" name="startTime">
+              </div>
+            </div>
+            <div class="col-sm-6 end-container">
+              <div class="end-time">End Time</div>
+              <div class="input-time">
+                <input type="text" name="endTime">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 text-container">
+            <div class="col-sm-12 title">
+              Enter Text Here
+            </div>
+            <div class="col-sm-12 text flex">
+              <textarea class="subtitle-text"></textarea>
+              <div class="submit-btn btn btn-primary">Done!</div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- <app-subtitle-editor [subtitleJson]="jsonResult"></app-subtitle-editor> -->
       </div>
     </div>
   </div>
