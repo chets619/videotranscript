@@ -7,28 +7,35 @@ import 'rxjs/Rx';
 
 const URL = window.URL;
 
+export class SubtitleObject {
+  startTime: number = null;
+  endTime: number = null;
+  subtitleText = '';
+}
+
 @Component({
   selector: 'app-video-component',
   templateUrl: './video-component.component.html',
   styleUrls: ['./video-component.component.styl']
 })
+
 export class VideoComponentComponent implements OnInit {
 
   private videoUrl = '';
-  private jsonResult = {};
+  private jsonResult = [];
   private showVideo = false;
   private subtitleLoaded = false;
+  private subtitleCollection = [];
+  private currIndex: number = null;
+  private currSubObj: SubtitleObject = new SubtitleObject();
   @ViewChild("inputUpload") uploadBtn: ElementRef;
+  @ViewChild("videoplayer") videoPlayer: ElementRef;
   @ViewChild("subtitleUpload") subtitleBtn: ElementRef;
 
   constructor(private http: Http, private el: ElementRef) { }
 
   ngOnInit() {
-    var v = new Vtt();
-    v.add(1.05, 4, 'Never drink liquid nitrogen.', 'align:middle line:84%');
-    v.add(5, 9, 'It will perforate your stomach.<br>You could die.');
 
-    // this.saveFile(v.toString());
   }
 
   onClickUpload() {
@@ -45,6 +52,42 @@ export class VideoComponentComponent implements OnInit {
 
   uploadSubtitle() {
     this.subtitleBtn.nativeElement.click();
+  }
+
+  saveSubtitle() {
+    let v = new Vtt();
+
+    this.subtitleCollection.forEach(element => {
+      v.add(Number(element.startTime), Number(element.endTime), element.subtitleText);
+    });
+
+    this.saveFile(v.toString());
+  }
+
+  setStartTime() {
+    let currTime = this.videoPlayer.nativeElement.currentTime;
+
+    if (this.currSubObj.startTime) {
+      this.currSubObj.endTime = currTime.toFixed(3);
+      this.subtitleCollection.push(this.currSubObj);
+      this.currSubObj = new SubtitleObject();
+    } else {
+      this.currSubObj.startTime = currTime.toFixed(3);
+    }
+  }
+
+  select() {
+    debugger;
+  }
+
+  processSubtitles() {
+    this.jsonResult.forEach(element => {
+      this.subtitleCollection.push({
+        startTime: element.start / 1000,
+        endTime: element.end / 1000,
+        subtitleText: element.part
+      });
+    });
   }
 
   //save vtt file
@@ -77,6 +120,8 @@ export class VideoComponentComponent implements OnInit {
       vttToJson(filecontent).then((result) => {
         self.jsonResult = result;
         self.subtitleLoaded = true;
+
+        self.processSubtitles();
       });
     }
     currFile.readAsText(a);

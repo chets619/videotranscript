@@ -42,11 +42,19 @@
       <div class="col-sm-6 subtitle-editor" *ngIf="subtitleLoaded">
         <div class="editor-wrapper">
           <div class="subtitle-collection">
+            <div class="subtitle-header col-sm-12 row flex">
+              <div class="start-time col-sm-2">Start Time</div>
+              <div class="end-time col-sm-2">End Time</div>
+              <div class="col-sm-6 subtitle-text">Text</div>
+              <div class="edit-btn-container col-sm-2"></div>
+            </div>
+            <app-subtitle-editor *ngFor="let currSubtitle of subtitleCollection; let i=index" [subtitle]="currSubtitle"
+              (click)="currIndex = i" [class.selected-row]="currIndex == i"></app-subtitle-editor>
 
           </div>
           <div class="button-container flex">
-            <div class="btn btn-primary start-btn">Set Start</div>
-            <div class="btn btn-primary stop-btn">Set Stop</div>
+            <div class="btn btn-primary start-btn" (click)="setStartTime()">Set Start</div>
+            <div class="btn btn-primary stop-btn" (click)="saveSubtitle()">Download</div>
             <div class="btn btn-primary edit-btn">Edit Selected</div>
           </div>
           <div class="editor-container col-sm-12 flex">

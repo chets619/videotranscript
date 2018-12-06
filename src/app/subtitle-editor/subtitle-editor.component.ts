@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SubtitleObject } from '../video-component/video-component.component';
 
 @Component({
   selector: 'app-subtitle-editor',
@@ -7,17 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SubtitleEditorComponent implements OnInit {
 
-  @Input() subtitleJson = [];
+  @Input() subtitle: SubtitleObject;
 
   constructor() { }
 
   ngOnInit() {
-    this.processJson();
-  }
-
-  processJson() {
-    let a = this.subtitleJson;
-    debugger;
   }
 
 }
