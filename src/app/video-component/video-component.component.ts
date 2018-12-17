@@ -27,7 +27,7 @@ export class VideoComponentComponent implements OnInit {
   private subtitleLoaded = false;
   private subtitleCollection = [];
   private currIndex: number = null;
-  private currSubObj: SubtitleObject = new SubtitleObject();
+  private currSubObj: SubtitleObject = null;
   @ViewChild("inputUpload") uploadBtn: ElementRef;
   @ViewChild("videoplayer") videoPlayer: ElementRef;
   @ViewChild("subtitleUpload") subtitleBtn: ElementRef;
@@ -65,19 +65,26 @@ export class VideoComponentComponent implements OnInit {
   }
 
   setStartTime() {
+    if (typeof this.currIndex == "number") {
+      this.currIndex = null;
+      this.currSubObj = null;
+    }
     let currTime = this.videoPlayer.nativeElement.currentTime;
 
-    if (this.currSubObj.startTime) {
+    if (this.currSubObj && this.currSubObj.startTime) {
       this.currSubObj.endTime = currTime.toFixed(3);
       this.subtitleCollection.push(this.currSubObj);
-      this.currSubObj = new SubtitleObject();
+      this.currSubObj = null;
     } else {
+      this.currSubObj = new SubtitleObject();
       this.currSubObj.startTime = currTime.toFixed(3);
     }
   }
 
-  select() {
-    debugger;
+  select(i: number) {
+    this.currIndex = i;
+
+    this.currSubObj = this.subtitleCollection[i];
   }
 
   processSubtitles() {
@@ -125,5 +132,26 @@ export class VideoComponentComponent implements OnInit {
       });
     }
     currFile.readAsText(a);
+  }
+
+  convertToTime(seconds: any) {
+    let date = new Date(null);
+    date.setSeconds(Number(seconds));
+    return date.toISOString().substr(11, 8);
+  }
+
+  convertToSecs(event) {
+    let timeNum = event.currentTarget.value.split(":");
+    let sum = 0;
+
+    timeNum.forEach((element, index) => {
+      sum += Number(element) * Math.pow(60, (2 - index));
+    });
+
+    return sum;
+  }
+
+  onDelete() {
+    
   }
 }

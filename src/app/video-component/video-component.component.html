@@ -49,25 +49,27 @@
               <div class="edit-btn-container col-sm-2"></div>
             </div>
             <app-subtitle-editor *ngFor="let currSubtitle of subtitleCollection; let i=index" [subtitle]="currSubtitle"
-              (click)="currIndex = i" [class.selected-row]="currIndex == i"></app-subtitle-editor>
+              (click)="select(i)" [class.selected-row]="currIndex == i"></app-subtitle-editor>
 
           </div>
           <div class="button-container flex">
             <div class="btn btn-primary start-btn" (click)="setStartTime()">Set Start</div>
             <div class="btn btn-primary stop-btn" (click)="saveSubtitle()">Download</div>
-            <div class="btn btn-primary edit-btn">Edit Selected</div>
+            <div class="btn btn-primary edit-btn" (click)="onDelete()">Delete Selected</div>
           </div>
           <div class="editor-container col-sm-12 flex">
             <div class="col-sm-6 start-container">
               <div class="start-time">Start Time</div>
               <div class="input-time">
-                <input type="text" name="startTime">
+                <input type="text" name="startTime" [ngModel]="currSubObj == null ? '' : convertToTime(currSubObj.startTime)"
+                  (blur)="currSubObj.startTime = convertToSecs($event)" [disabled]="currSubObj == null">
               </div>
             </div>
             <div class="col-sm-6 end-container">
               <div class="end-time">End Time</div>
               <div class="input-time">
-                <input type="text" name="endTime">
+                <input type="text" name="endTime" [ngModel]="currSubObj == null ? '' : convertToTime(currSubObj.endTime)"
+                  (blur)="currSubObj.endTime = convertToSecs($event)" [disabled]="currSubObj == null">
               </div>
             </div>
           </div>
@@ -76,7 +78,8 @@
               Enter Text Here
             </div>
             <div class="col-sm-12 text flex">
-              <textarea class="subtitle-text"></textarea>
+              <textarea class="subtitle-text" [(ngModel)]="currSubObj == null ? '' : currSubObj.subtitleText"
+                [disabled]="currSubObj == null"></textarea>
               <div class="submit-btn btn btn-primary">Done!</div>
             </div>
           </div>

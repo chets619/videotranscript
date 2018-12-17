@@ -9,6 +9,7 @@ import { VgControlsModule } from 'videogular2/controls';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 import { SubtitleEditorComponent } from './subtitle-editor/subtitle-editor.component';
 
 @NgModule({
@@ -23,7 +24,8 @@ import { SubtitleEditorComponent } from './subtitle-editor/subtitle-editor.compo
     VgCoreModule,
     VgControlsModule,
     HttpClientModule,
-    HttpModule
+    HttpModule,
+    FormsModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]
