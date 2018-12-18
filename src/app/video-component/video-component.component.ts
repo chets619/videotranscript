@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import * as Vtt from 'vtt-creator';
 import * as vttToJson from "vtt-json";
@@ -148,10 +148,28 @@ export class VideoComponentComponent implements OnInit {
       sum += Number(element) * Math.pow(60, (2 - index));
     });
 
-    return sum;
+    this.currSubObj.startTime = sum;
+    this.sortTime();
   }
 
   onDelete() {
-    
+    this.subtitleCollection.splice(this.currIndex, 1);
+  }
+
+  goTo(time: string) {
+    this.videoPlayer.nativeElement.currentTime = Number(time);
+  }
+
+  sortTime() {
+    this.subtitleCollection.sort((a, b) => {
+      return Number(a.startTime) - Number(b.startTime);
+    })
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onKeypress($event) {
+    if ($event.keyCode === 32 && this.subtitleLoaded && $event.target.tagName != "TEXTAREA") {
+      this.setStartTime();
+    }
   }
 }

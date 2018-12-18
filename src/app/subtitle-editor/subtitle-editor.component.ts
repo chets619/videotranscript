@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SubtitleObject } from '../video-component/video-component.component';
 
 @Component({
@@ -9,6 +9,7 @@ import { SubtitleObject } from '../video-component/video-component.component';
 export class SubtitleEditorComponent implements OnInit {
 
   @Input() subtitle: SubtitleObject;
+  @Output() goToTime = new EventEmitter<any>();
 
   constructor() { }
 
@@ -19,6 +20,10 @@ export class SubtitleEditorComponent implements OnInit {
     var date = new Date(null);
     date.setSeconds(Number(seconds));
     return date.toISOString().substr(11, 8);
+  }
+
+  setTime() {
+    this.goToTime.emit(this.subtitle.startTime);
   }
 
 }

@@ -49,11 +49,11 @@
               <div class="edit-btn-container col-sm-2"></div>
             </div>
             <app-subtitle-editor *ngFor="let currSubtitle of subtitleCollection; let i=index" [subtitle]="currSubtitle"
-              (click)="select(i)" [class.selected-row]="currIndex == i"></app-subtitle-editor>
+              (click)="select(i)" [class.selected-row]="currIndex == i" (goToTime)="goTo($event)"></app-subtitle-editor>
 
           </div>
           <div class="button-container flex">
-            <div class="btn btn-primary start-btn" (click)="setStartTime()">Set Start</div>
+            <div class="btn btn-primary start-btn" (click)="setStartTime()" [innerHTML]="currSubObj != null && currSubObj.endTime == null? 'Set End' : 'Set Start'"></div>
             <div class="btn btn-primary stop-btn" (click)="saveSubtitle()">Download</div>
             <div class="btn btn-primary edit-btn" (click)="onDelete()">Delete Selected</div>
           </div>
@@ -62,7 +62,7 @@
               <div class="start-time">Start Time</div>
               <div class="input-time">
                 <input type="text" name="startTime" [ngModel]="currSubObj == null ? '' : convertToTime(currSubObj.startTime)"
-                  (blur)="currSubObj.startTime = convertToSecs($event)" [disabled]="currSubObj == null">
+                  (blur)="convertToSecs($event)" [disabled]="currSubObj == null">
               </div>
             </div>
             <div class="col-sm-6 end-container">

@@ -4,7 +4,7 @@
     <div class="end-time col-sm-2" [innerHtml]="convertToISO(subtitle.endTime)"></div>
     <div class="col-sm-6 subtitle-text">{{subtitle.subtitleText}}</div>
     <div class="edit-btn-container col-sm-2">
-      <div class="btn btn-primary">Go to Time</div>
+      <div class="btn btn-primary" (click)="setTime()">Go to Time</div>
     </div>
   </div>
 </div>
