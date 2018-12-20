@@ -17,6 +17,8 @@ export class SubtitleEditorComponent implements OnInit {
   }
 
   convertToISO(seconds: string) {
+    if (!seconds)
+      return;
     var date = new Date(null);
     date.setSeconds(Number(seconds));
     return date.toISOString().substr(11, 8);

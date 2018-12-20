@@ -4,6 +4,7 @@ import * as Vtt from 'vtt-creator';
 import * as vttToJson from "vtt-json";
 import { Http, Response } from '@angular/http';
 import 'rxjs/Rx';
+import { DomSanitizer } from '@angular/platform-browser';
 
 const URL = window.URL;
 
@@ -28,11 +29,14 @@ export class VideoComponentComponent implements OnInit {
   private subtitleCollection = [];
   private currIndex: number = null;
   private currSubObj: SubtitleObject = null;
+  private showSubtitleMessage = false;
+  private timer: any;
+  subtitleUrl: any = '';
   @ViewChild("inputUpload") uploadBtn: ElementRef;
   @ViewChild("videoplayer") videoPlayer: ElementRef;
   @ViewChild("subtitleUpload") subtitleBtn: ElementRef;
 
-  constructor(private http: Http, private el: ElementRef) { }
+  constructor(private http: Http, private el: ElementRef, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
 
@@ -55,13 +59,51 @@ export class VideoComponentComponent implements OnInit {
   }
 
   saveSubtitle() {
+    let vttObj = this.generateVttObject();
+
+    this.saveFile(vttObj.toString());
+  }
+
+  generateVttObject() {
     let v = new Vtt();
 
     this.subtitleCollection.forEach(element => {
       v.add(Number(element.startTime), Number(element.endTime), element.subtitleText);
     });
 
-    this.saveFile(v.toString());
+    return v;
+  }
+
+  onPreview() {
+    let subObj = this.generateVttObject();
+    clearTimeout(this.timer);
+    this.createSubtitleBlobURL(subObj.toString());
+    this.showSubtitleMessage = true;
+    this.timer = setTimeout(() => {
+      this.showSubtitleMessage = false;
+    }, 5000)
+  }
+
+  createSubtitleBlobURL(data): any {
+    let name = 'sample.vtt';
+    let type = 'data:attachment/text';
+    if (data != null && navigator.msSaveBlob)
+      return navigator.msSaveBlob(new Blob([data], { type: type }), name);
+    var url = window.URL.createObjectURL(new Blob([data], { type: type }));
+    this.subtitleUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+    return url;
+  }
+
+  //save vtt file
+  saveFile(data) {
+    let a = document.createElement("a");
+    a.href = this.createSubtitleBlobURL(data);
+    document.body.appendChild(a);
+    a.download = name;
+    a.click();
+    // window.URL.revokeObjectURL(url);
+    a.remove();
   }
 
   setStartTime() {
@@ -97,23 +139,6 @@ export class VideoComponentComponent implements OnInit {
     });
   }
 
-  //save vtt file
-  saveFile(data) {
-    let name = 'sample.vtt';
-    let type = 'data:attachment/text';
-    if (data != null && navigator.msSaveBlob)
-      return navigator.msSaveBlob(new Blob([data], { type: type }), name);
-
-    let a = document.createElement("a");
-    document.body.appendChild(a);
-    var url = window.URL.createObjectURL(new Blob([data], { type: type }));
-    a.href = url;
-    a.download = name;
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
-  }
-
   vttChanged($event) {
     const a = $event.currentTarget.files[0];
     let currFile = new FileReader();
@@ -135,6 +160,8 @@ export class VideoComponentComponent implements OnInit {
   }
 
   convertToTime(seconds: any) {
+    if (!seconds)
+      return;
     let date = new Date(null);
     date.setSeconds(Number(seconds));
     return date.toISOString().substr(11, 8);
@@ -148,7 +175,10 @@ export class VideoComponentComponent implements OnInit {
       sum += Number(element) * Math.pow(60, (2 - index));
     });
 
-    this.currSubObj.startTime = sum;
+    if (event.target.classList[0] == "start-time")
+      this.currSubObj.startTime = sum;
+    else
+      this.currSubObj.endTime = sum;
     this.sortTime();
   }
 
@@ -169,7 +199,10 @@ export class VideoComponentComponent implements OnInit {
   @HostListener('document:keyup', ['$event'])
   onKeypress($event) {
     if ($event.keyCode === 32 && this.subtitleLoaded && $event.target.tagName != "TEXTAREA") {
-      this.setStartTime();
+      if ($event.ctrlKey)
+        this.setStartTime();
+      else
+        this.videoPlayer.nativeElement.paused ? this.videoPlayer.nativeElement.play() : this.videoPlayer.nativeElement.pause();
     }
   }
 }

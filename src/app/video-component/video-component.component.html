@@ -22,8 +22,20 @@
       <div class="col-sm-6 video-container">
         <video controls #videoplayer [class.no-display]="!showVideo">
           <source type="video/mp4">
+          <track [src]="subtitleUrl" kind="subtitles" srclang="en" label="English" *ngIf="subtitleUrl != ''">
           Your browser does not support the video tag.
         </video>
+        
+        <div class="button-container flex" *ngIf="subtitleLoaded">
+          <div class="btn btn-primary start-btn" (click)="setStartTime()" [innerHTML]="currSubObj != null && currSubObj.endTime == null? 'Set End' : 'Set Start'"></div>
+          <div class="btn btn-primary stop-btn" (click)="saveSubtitle()">Download</div>
+          <div class="btn btn-primary edit-btn" (click)="onDelete()">Delete Selected</div>
+          <div class="btn btn-primary preview-btn" (click)="onPreview()">Preview</div>
+        </div>
+
+        <div class="preview-success" *ngIf="showSubtitleMessage">
+          Preview Generation Successful! Please enable subtitles in the video player by entering the options menu.
+        </div>
       </div>
 
       <div class="col-sm-6 subtitle-container" *ngIf="!subtitleLoaded">
@@ -52,24 +64,19 @@
               (click)="select(i)" [class.selected-row]="currIndex == i" (goToTime)="goTo($event)"></app-subtitle-editor>
 
           </div>
-          <div class="button-container flex">
-            <div class="btn btn-primary start-btn" (click)="setStartTime()" [innerHTML]="currSubObj != null && currSubObj.endTime == null? 'Set End' : 'Set Start'"></div>
-            <div class="btn btn-primary stop-btn" (click)="saveSubtitle()">Download</div>
-            <div class="btn btn-primary edit-btn" (click)="onDelete()">Delete Selected</div>
-          </div>
           <div class="editor-container col-sm-12 flex">
             <div class="col-sm-6 start-container">
               <div class="start-time">Start Time</div>
               <div class="input-time">
-                <input type="text" name="startTime" [ngModel]="currSubObj == null ? '' : convertToTime(currSubObj.startTime)"
+                <input type="text" name="startTime" class="start-time" [ngModel]="currSubObj == null ? '' : convertToTime(currSubObj.startTime)"
                   (blur)="convertToSecs($event)" [disabled]="currSubObj == null">
               </div>
             </div>
             <div class="col-sm-6 end-container">
               <div class="end-time">End Time</div>
               <div class="input-time">
-                <input type="text" name="endTime" [ngModel]="currSubObj == null ? '' : convertToTime(currSubObj.endTime)"
-                  (blur)="currSubObj.endTime = convertToSecs($event)" [disabled]="currSubObj == null">
+                <input type="text" name="endTime" class="end-time" [ngModel]="currSubObj == null ? '' : convertToTime(currSubObj.endTime)"
+                  (blur)="convertToSecs($event)" [disabled]="currSubObj == null">
               </div>
             </div>
           </div>
