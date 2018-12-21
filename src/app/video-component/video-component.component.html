@@ -27,7 +27,7 @@
         <div class="button-container flex" *ngIf="subtitleLoaded">
           <div class="btn btn-primary start-btn" (click)="setStartTime()" [innerHTML]="currSubObj != null && currSubObj.endTime == null? 'Set End' : 'Set Start'"></div>
           <div class="btn btn-primary stop-btn" (click)="saveSubtitle()">Download</div>
-          <div class="btn btn-primary edit-btn" (click)="onDelete()">Delete Selected</div>
+          <div class="btn btn-primary edit-btn" (click)="onDelete()" [class.disabled]="currSubObj == null">Delete Selected</div>
           <div class="btn btn-primary preview-btn" (click)="onPreview()">Preview</div>
         </div>
 
