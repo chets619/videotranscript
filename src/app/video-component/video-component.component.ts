@@ -31,6 +31,7 @@ export class VideoComponentComponent implements OnInit {
   private currSubObj: SubtitleObject = null;
   private showSubtitleMessage = false;
   private isTranscriptSelected = false;
+  private isHelpShown = false;
   private timer: any;
   subtitleUrl: any = '';
   private transcriptText: string | ArrayBuffer = '';

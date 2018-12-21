@@ -6,6 +6,13 @@
         padding 1.2rem
         .title-container
             text-align center
+        .help-icon
+            position fixed
+            right 3%
+            top 7%
+            font-size 1.4rem
+            color #0062cc
+            cursor pointer
         .select-video-container
             margin 3.5rem 0
             padding 1rem 0.5rem
@@ -21,6 +28,9 @@
                 margin 0
             .video-container
                 border-right solid 1px $tertiaryColor
+                .color-red
+                    color red
+                    font-weight 500
                 video
                     width 100%
                 .button-container
@@ -91,3 +101,27 @@
                 height 50vh
             .another-div
                 padding-top 0.8rem
+
+.help-div
+    position absolute
+    top 10%
+    left 25%
+    transition opacity 1s ease
+    opacity 0
+    z-index -1
+    background #B9D4FD
+    &.visible
+        opacity 1
+        z-index 1
+    .fa-close
+        position absolute
+        right 2%
+        top 2%
+        font-size 1.3rem
+        cursor pointer
+    .help-desc
+        padding-top 10px
+    .help-tab
+        width 50vw
+        padding 1.5rem
+        border solid 1px #333

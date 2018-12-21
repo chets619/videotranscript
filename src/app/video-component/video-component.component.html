@@ -2,10 +2,8 @@
   <div class="col-sm-12 title-card card flex">
     <div class="title-container col-sm-6">
       <h3 class="title">Video Subtitle Generator</h3>
-      <div class="description" *ngIf="!subtitleLoaded">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit in
-        laudantium qui tenetur
-        voluptatum eligendi? Laborum ratione, tempora officiis omnis excepturi cumque consequatur dolores ipsam!
-        Tempore, error eaque. Tempore, porro.</div>
+      <div class="description" *ngIf="!subtitleLoaded">A subtitle generator to create and download subtitles for videos. Select a video below to start, then choose whether you want to start from scratch or load a previously created subtitle file to edit.</div>
+      <div class="fa fa-question-circle help-icon" *ngIf="subtitleLoaded" (click)="isHelpShown = true"></div>
     </div>
 
     <div class="select-video-container col-sm-4 flex" [class.no-display]="showVideo">
@@ -34,7 +32,8 @@
         </div>
 
         <div class="preview-success" *ngIf="showSubtitleMessage">
-          Preview Generation Successful! Please enable subtitles in the video player by entering the options menu.
+          Preview Generation Successful! <span class="color-red">Please enable subtitles in the video player</span> by
+          entering the options menu.
         </div>
       </div>
 
@@ -112,6 +111,27 @@
       <div class="col-sm-12 flex another-div">
         <div class="btn btn-success stop-btn" (click)="isTranscriptSelected = false">Select another file</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="help-div" [class.visible]="isHelpShown">
+  <div class="help-tab col-sm-12">
+    <div class="col-sm-12 title flex">
+      <h4>Help</h4>
+      <div class="fa fa-close" (click)="isHelpShown = false"></div>
+    </div>
+    <div class="col-sm-12 help-desc">
+      <ul>
+        <li>Press space to play / pause video</li>
+        <li>Press ctrl + space to add start / end time for a subtitle. The start time button also serves the same purpose.</li>
+        <li>Press left / right arrow key to move rewind / forward video by 5s</li>
+        <li>Click the red (<) icon in the right to open up the transcript screen, here you can load a txt file to copy text from </li>
+        <li>Press the preview button to load the current state of the subtitles in the video. NOTE: you have to enable subtitles from the options menu on the controls bar.</li>
+        <li>You can edit the start time, end time and subtitle text for an entry by selecting it from the list</li>
+        <li>Delete an entry by clicking the delete selected button after selection</li>
+        <li>Download the vtt file by clicking the Download button</li>
+      </ul>
     </div>
   </div>
 </div>
