@@ -53,4 +53,36 @@
             .text
                 justify-content space-around
                 textarea
-                    width 70%
+                    width 100%
+    
+.transcript-wrapper
+    position absolute
+    top 10%
+    left 25%
+    transition left 1s ease
+    &.hide
+        left 100%
+    .tab-anchor
+        border solid 1px red
+        height 40px
+        width 20px
+        position absolute
+        top 50%
+        left -20px
+        cursor pointer
+        background red
+        opacity 0.9
+        color white
+    .transcript-tab
+        width 50vw
+        height 80vh
+        padding 1.5rem
+        border solid 1px black
+        background blue
+        .trans-desc
+            justify-content space-between
+            padding-top 1rem
+        .transcript
+            padding-top 1rem
+            textarea
+                width 100%

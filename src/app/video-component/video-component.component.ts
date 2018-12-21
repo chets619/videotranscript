@@ -30,8 +30,10 @@ export class VideoComponentComponent implements OnInit {
   private currIndex: number = null;
   private currSubObj: SubtitleObject = null;
   private showSubtitleMessage = false;
+  private isTranscriptSelected = false;
   private timer: any;
   subtitleUrl: any = '';
+  private transcriptText: string | ArrayBuffer = '';
   @ViewChild("inputUpload") uploadBtn: ElementRef;
   @ViewChild("videoplayer") videoPlayer: ElementRef;
   @ViewChild("subtitleUpload") subtitleBtn: ElementRef;
@@ -196,13 +198,28 @@ export class VideoComponentComponent implements OnInit {
     })
   }
 
+  transcriptChanged(event) {
+    let file = event.target.files[0];
+
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      this.transcriptText = fileReader.result;
+      this.isTranscriptSelected = true;
+    }
+    fileReader.readAsText(file);
+  }
+
   @HostListener('document:keyup', ['$event'])
   onKeypress($event) {
-    if ($event.keyCode === 32 && this.subtitleLoaded && $event.target.tagName != "TEXTAREA") {
+    if ($event.keyCode === 32 && this.subtitleLoaded && $event.target.tagName != "TEXTAREA") { //space
       if ($event.ctrlKey)
         this.setStartTime();
       else
         this.videoPlayer.nativeElement.paused ? this.videoPlayer.nativeElement.play() : this.videoPlayer.nativeElement.pause();
+    } else if ($event.keyCode === 39 && this.subtitleLoaded && $event.target.tagName != "TEXTAREA") { // right key
+      this.videoPlayer.nativeElement.currentTime += 5;
+    } else if ($event.keyCode === 37 && this.subtitleLoaded && $event.target.tagName != "TEXTAREA") { // left key
+      this.videoPlayer.nativeElement.currentTime -= 5;
     }
   }
 }

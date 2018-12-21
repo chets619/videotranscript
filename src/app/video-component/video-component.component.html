@@ -25,7 +25,7 @@
           <track [src]="subtitleUrl" kind="subtitles" srclang="en" label="English" *ngIf="subtitleUrl != ''">
           Your browser does not support the video tag.
         </video>
-        
+
         <div class="button-container flex" *ngIf="subtitleLoaded">
           <div class="btn btn-primary start-btn" (click)="setStartTime()" [innerHTML]="currSubObj != null && currSubObj.endTime == null? 'Set End' : 'Set Start'"></div>
           <div class="btn btn-primary stop-btn" (click)="saveSubtitle()">Download</div>
@@ -84,17 +84,29 @@
             <div class="col-sm-12 title">
               Enter Text Here
             </div>
-            <div class="col-sm-12 text flex">
+            <div class="col-sm-12 text">
               <textarea class="subtitle-text" [(ngModel)]="currSubObj == null ? '' : currSubObj.subtitleText"
                 [disabled]="currSubObj == null"></textarea>
-              <div class="submit-btn btn btn-primary">Done!</div>
+              <!-- <div class="submit-btn btn btn-primary">Done!</div> -->
             </div>
           </div>
         </div>
-
-
-        <!-- <app-subtitle-editor [subtitleJson]="jsonResult"></app-subtitle-editor> -->
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="transcript-wrapper" *ngIf="subtitleLoaded" [class.hide]="!isOpen">
+  <div class="tab-anchor fa flex" [class.fa-chevron-left]="!isOpen" [class.fa-chevron-right]="isOpen" (click)="isOpen = !isOpen"></div>
+  <div class="transcript-tab">
+    <div class="col-sm-12 title flex"><h4>Transcript Viewer</h4></div>
+    <div class="col-sm-12 trans-desc flex" *ngIf="!isTranscriptSelected">
+      <div class="desc">Enter a file to be read</div>
+      <input type='file' (change)="transcriptChanged($event)">
+    </div>
+
+    <div class="transcript col-sm-12" *ngIf="isTranscriptSelected">
+      <textarea [(ngModel)]="transcriptText"></textarea>
     </div>
   </div>
 </div>
