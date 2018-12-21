@@ -186,6 +186,8 @@ export class VideoComponentComponent implements OnInit {
 
   onDelete() {
     this.subtitleCollection.splice(this.currIndex, 1);
+    this.currSubObj = null;
+    this.currIndex = null;
   }
 
   goTo(time: string) {

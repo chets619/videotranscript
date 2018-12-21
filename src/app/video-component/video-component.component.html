@@ -99,7 +99,9 @@
 <div class="transcript-wrapper" *ngIf="subtitleLoaded" [class.hide]="!isOpen">
   <div class="tab-anchor fa flex" [class.fa-chevron-left]="!isOpen" [class.fa-chevron-right]="isOpen" (click)="isOpen = !isOpen"></div>
   <div class="transcript-tab">
-    <div class="col-sm-12 title flex"><h4>Transcript Viewer</h4></div>
+    <div class="col-sm-12 title flex">
+      <h4>Transcript Viewer</h4>
+    </div>
     <div class="col-sm-12 trans-desc flex" *ngIf="!isTranscriptSelected">
       <div class="desc">Enter a file to be read</div>
       <input type='file' (change)="transcriptChanged($event)">
@@ -107,6 +109,9 @@
 
     <div class="transcript col-sm-12" *ngIf="isTranscriptSelected">
       <textarea [(ngModel)]="transcriptText"></textarea>
+      <div class="col-sm-12 flex another-div">
+        <div class="btn btn-success stop-btn" (click)="isTranscriptSelected = false">Select another file</div>
+      </div>
     </div>
   </div>
 </div>
