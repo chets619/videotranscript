@@ -103,7 +103,7 @@
     </div>
     <div class="col-sm-12 trans-desc flex" *ngIf="!isTranscriptSelected">
       <div class="desc">Enter a file to be read</div>
-      <input type='file' (change)="transcriptChanged($event)">
+      <input type='file' accept="text/plain" (change)="transcriptChanged($event)">
     </div>
 
     <div class="transcript col-sm-12" *ngIf="isTranscriptSelected">
