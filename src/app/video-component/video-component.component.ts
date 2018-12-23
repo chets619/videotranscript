@@ -1,12 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import * as Vtt from 'vtt-creator';
-import * as vttToJson from "vtt-json";
 import { Http, Response } from '@angular/http';
 import 'rxjs/Rx';
 import { DomSanitizer } from '@angular/platform-browser';
 
 const URL = window.URL;
+declare var convertVttToJson: any;
 
 export class SubtitleObject {
   startTime: number = null;
@@ -82,6 +82,7 @@ export class VideoComponentComponent implements OnInit {
     clearTimeout(this.timer);
     this.createSubtitleBlobURL(subObj.toString());
     this.showSubtitleMessage = true;
+    this.videoPlayer.nativeElement.textTracks[0].mode = 'showing';
     this.timer = setTimeout(() => {
       this.showSubtitleMessage = false;
     }, 5000)
@@ -100,6 +101,7 @@ export class VideoComponentComponent implements OnInit {
 
   //save vtt file
   saveFile(data) {
+    let name = 'sample.vtt';
     let a = document.createElement("a");
     a.href = this.createSubtitleBlobURL(data);
     document.body.appendChild(a);
@@ -152,7 +154,7 @@ export class VideoComponentComponent implements OnInit {
       let filecontent = contents.result;
 
       //vtt to json
-      vttToJson(filecontent).then((result) => {
+      convertVttToJson(filecontent).then((result) => {
         self.jsonResult = result;
         self.subtitleLoaded = true;
 

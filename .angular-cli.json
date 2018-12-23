@@ -24,7 +24,9 @@
         "../node_modules/font-awesome/css/font-awesome.css",
         "styles.styl"
       ],
-      "scripts": [],
+      "scripts": [
+        "./app/video-component/index.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
